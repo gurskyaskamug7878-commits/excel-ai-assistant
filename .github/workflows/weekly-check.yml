@@ -1,0 +1,43 @@
+name: Weekly Availability & Security Audit
+
+on:
+  schedule:
+    # 每周一北京时间 09:00 (UTC 01:00) 自动运行一次在线可用性与安全审计
+    - cron: '0 1 * * 1'
+    # 每天北京时间 08:30 (UTC 00:30) 检查在线 Demo 连通性
+    - cron: '30 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  audit-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Security Audit (No Hardcoded API Keys or eval)
+        run: |
+          if grep -rnE "sk-[a-zA-Z0-9]{20,}" index.html; then
+            echo "❌ Security Alert: Potential hardcoded API key detected!"
+            exit 1
+          fi
+          if grep -rnE "\beval\s*\(" index.html; then
+            echo "❌ Security Alert: Unsafe eval() detected!"
+            exit 1
+          fi
+          echo "✅ Security audit passed: Zero hardcoded keys, zero eval()."
+
+      - name: Check Live Demo Availability
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://gurskyaskamug7878-commits.github.io/excel-ai-assistant/ || echo "000")
+          echo "Live Demo HTTP Status: $STATUS"
+          if [ "$STATUS" != "200" ]; then
+            echo "⚠️ Warning: GitHub Pages returned status $STATUS."
+          else
+            echo "✅ Excel AI Assistant Demo is live and healthy (HTTP 200)."
+          fi
+
+      - name: Weekly Maintenance & Changelog Reminder
+        run: |
+          echo "📅 Latest commit: $(git log -1 --format='%h - %s (%cd)' --date=short)"
+          echo "💡 Weekly Tip: Check open feature requests and update the Changelog section in index.html."
