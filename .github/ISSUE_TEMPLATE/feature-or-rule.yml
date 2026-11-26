@@ -1,0 +1,24 @@
+name: ✨ 提交新清洗规则 / 功能建议
+description: 希望 AI Excel 助手支持新的表格处理动作或自然语言指令
+title: "[规则/功能建议] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: use_case
+    attributes:
+      label: 你的真实办公场景是什么？
+      placeholder: 例如：我每个月要把财务导出的报销单按报销人合并金额，并剔除金额为0的行...
+    validations:
+      required: true
+  - type: textarea
+    id: sample_data
+    attributes:
+      label: 示例数据格式（脱敏后的列名与 2~3 行样例）
+      placeholder: |
+        姓名 | 报销金额 | 日期
+        张三 | 120.5   | 2026-11-01
+  - type: input
+    id: ai_prompt_example
+    attributes:
+      label: 你希望用哪句大白话触发这个功能？
+      placeholder: 例如：按姓名合并报销金额并删掉0元记录

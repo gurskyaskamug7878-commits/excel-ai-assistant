@@ -1,0 +1,20 @@
+name: 🐛 表格解析异常 / Bug 反馈
+description: 报告特定 Excel/CSV 文件处理异常或界面问题
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤与异常现象
+      placeholder: 请描述你点击了哪个功能、上传了什么格式的文件（.xlsx / .xls / .csv）、出现了什么提示...
+    validations:
+      required: true
+  - type: dropdown
+    id: browser
+    attributes:
+      label: 浏览器与设备环境
+      options:
+        - 电脑 Chrome / Edge
+        - 电脑 Safari / Firefox
+        - 手机端浏览器
